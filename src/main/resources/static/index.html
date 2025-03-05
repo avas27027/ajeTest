@@ -1,11 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <title>Casa Cambios</title>
 </head>
+
 <body>
-    <h1>Hello World</h1>
+    <h1>Casa de cambios digital</h1>
+    <button id="exchButton">Tipos de cambio</button>
+    <div><p id="response2"></p></div>
+    <form id="myForm">
+        <label for="transaction">Tipo de transacción (sell / buy)</label>
+        <input type="text" name="transaction">
+
+        <label for="amount">Monto</label>
+        <input type="number" name="amount">
+
+        <label for="originCurrency">Moneda origen (PEN / USD / EUR)</label>
+        <input type="text" name="originCurrency">
+
+        <label for="endCurrency">Moneda destino (PEN / USD / EUR)</label>
+        <input type="text" name="endCurrency">
+
+        <button type="submit">Cambiar</button>
+    </form>
+    <div>
+        <p id="response1"></p>
+    </div>
 </body>
+<script>
+    var form = document.getElementById("myForm")
+    var exchButton = document.getElementById("exchButton")
+    var response1 = document.getElementById("response1")
+    var response2 = document.getElementById("response2")
+
+    exchButton.onclick = async (e) => {
+        let response = await fetch('http://localhost:8080/exchangeValue').then(async (response) => {
+            var text = await response.text()
+            response2.innerHTML = text
+        })
+    }
+
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        data = {
+            transaction: form.querySelector('input[name="transaction"]').value,
+            amount: form.querySelector('input[name="amount"]').value,
+            originCurrency: form.querySelector('input[name="originCurrency"]').value,
+            endCurrency: form.querySelector('input[name="endCurrency"]').value
+        }
+
+        let response = await fetch('http://localhost:8080/exchangeOp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify(data),
+        }).then(async (response) => {
+            var text = await response.text()
+            response1.innerHTML = text
+            console.log(JSON.parse(text))
+        })
+    }
+</script>
+
 </html>
