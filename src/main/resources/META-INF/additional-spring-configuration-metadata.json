@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "app.password",
+    "type": "java.lang.String",
+    "description": "Contraseña para ingresar a la api authenticated"
+  },
+  {
+    "name": "app.username",
+    "type": "java.lang.String",
+    "description": "Usuario para ingresar a la api authenticated"
+  },
+  {
+    "name": "app.apikey",
+    "type": "java.lang.String",
+    "description": "Key de exchangeratesapi.io"
+  }
+]}

@@ -11,7 +11,9 @@
 <body>
     <h1>Casa de cambios digital</h1>
     <button id="exchButton">Tipos de cambio</button>
-    <div><p id="response2"></p></div>
+    <div>
+        <p id="response2"></p>
+    </div>
     <form id="myForm">
         <label for="transaction">Tipo de transacción (sell / buy)</label>
         <input type="text" name="transaction">
@@ -38,7 +40,12 @@
     var response2 = document.getElementById("response2")
 
     exchButton.onclick = async (e) => {
-        let response = await fetch('http://localhost:8080/exchangeValue').then(async (response) => {
+        let response = await fetch('http://localhost:8080/exchange/exchangeValue', {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Basic ' + btoa("admin" + ":" + "12345")
+            },
+        }).then(async (response) => {
             var text = await response.text()
             response2.innerHTML = text
         })
@@ -53,11 +60,12 @@
             endCurrency: form.querySelector('input[name="endCurrency"]').value
         }
 
-        let response = await fetch('http://localhost:8080/exchangeOp', {
+        let response = await fetch('http://localhost:8080/exchange/exchangeOp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
+                'Authorization': 'Basic ' + btoa("admin" + ":" + "12345")
             },
             body: JSON.stringify(data),
         }).then(async (response) => {
